@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<?php
+    include 'koneksi.php';
+
+         $id_barang = '';
+         $nim = '';
+         $nama_mahasiswa = '';
+         $kode_barang = '';
+         $nama_barang = '';
+         $status_barang = '';
+         $harga_barang = '';
+
+        if(isset($_GET['ubah'])){
+           $id_mahasiswa = $_GET['ubah'];
+
+           $query = "SELECT * FROM tabel_barang WHERE id_barang = '$id_barang';";
+           $sql = mysqli_query($conn, $query);
+
+           $result = mysqli_fetch_assoc($sql);
+
+           $nim = $result['nim_mahasiswa'];
+           $nama_mahasiswa = $result['nama_mahasiswa'];
+           $kode_barang = $result['kode_barang'];
+           $nama_barang = $result['nama_barang'];
+           $status_barang = $result['status_barang'];
+           $harga_barang = $result['harga_barang'];
+
+           //var_dump($result);
+           //die();
+      }
+
+?>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <!--Bootstrap-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
+
+    <title>tugas_pbo_crud</title>
+</head>
+<body>
+    <nav class="navbar bg-light mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                CRUD - BS5
+            </a>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <form method="POST" action="proses.php" enctype="multipart/form-data">
+            <input type="hidden" value="<?php echo $id_barang; ?>" name="id_barang">
+            <div class="mb-3 row">
+                <label for="nim" class="col-sm-2 col-form-label">
+                    NIM
+                </label>
+                <div class="col-sm-10">
+                    <input required type="text" name="nim" class="form-control" id="nim" placeholder="Ex: 21051214049" value="<?php echo $nim; ?>">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="nama" class="col-sm-2 col-form-label">
+                    Nama Mahasiswa
+                </label>
+                <div class="col-sm-10">
+                    <input required type="text" name="nama_mahasiswa" class="form-control" id="nama" placeholder="Ex: Calycha Irmalia Kurniasari" value="<?php echo $nama_mahasiswa; ?>">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="jenis kelamin" class="col-sm-2 col-form-label">
+                    Kode Barang
+               </label>
+                <div class="col-sm-10">
+                    <input required type="text" name="kode_barang" class="form-control" id="kode_barang" placeholder="Ex: 101" value="<?php echo $kode_barang; ?>">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="alamat" class="col-sm-2 col-form-label">
+                    Nama Barang
+                </label>
+                <div class="col-sm-10">
+                    <input required type="text" name="nama_barang" class="form-control" id="nama_barang" placeholder="Ex: Pensil" value="<?php echo $nama_barang; ?>">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="prodi" class="col-sm-2 col-form-label">
+                    Status Barang
+                </label>
+                <div class="col-sm-10">
+                    <input required type="text" name="status_barang" class="form-control" id="status_barang" placeholder="Ex: ada" value="<?php echo $status_barang; ?>">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="foto" class="col-sm-2 col-form-label">
+                    Foto Barang
+                </label>
+                <div class="col-sm-10">
+                    <input <?php if(!isset($_GET['ubah'])){ echo "required";} ?>required class="form-control" type="file" name="foto" id="foto" accept="image/*">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="harga_barang" class="col-sm-2 col-form-label">
+                    Harga Barang
+                </label>
+                <div class="col-sm-10">
+                    <input required type="text" class="form-control" id="harga_barang" name="harga_barang" placeholder="Ex: 4000" value="<?php echo $harga_barang; ?>">
+                </div>
+            </div>
+
+            <div class="mb-3 row mt-5">
+                <div class="col">
+                    <?php
+                    if(isset($_GET['ubah'])){
+                    ?>
+                    <button type="submit" name="aksi" value="edit" class="btn btn-primary">
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        Simpan Perubahan
+                    </button>
+                    <?php
+                    } else {
+                    ?>
+                    <button type="submit" name="aksi" value="add" class="btn btn-primary">
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        Tambahkan Data
+                    </button>
+                    <?php
+                    }
+                    ?>
+                    <a href="index.php" type="button" class="btn btn-danger">
+                        <i class="fa fa-reply" aria-hidden="true"></i>
+                        Batal
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
