@@ -1,0 +1,111 @@
+<?php
+    include 'koneksi.php';
+
+    $query = "SELECT * FROM tabel_barang;";
+    $sql = mysqli_query($conn, $query);
+    $no = 0;
+    //var_dump($result);
+    
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!--Bootstrap-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
+
+    <title>UAS PBO PROGRAM SEDERHANA</title>
+</head>
+<body>
+    <nav class="navbar bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                UAS PBO MEMBUAT PROGRAM SEDERHANA
+            </a>
+        </div>
+    </nav>
+
+    <!--Judul-->
+    <div class="container-fluid">
+        <h1 class="mt-4">Data Kebutuhan Mahasiswa</h1>
+        <figure>
+            <blockquote class="blockquote">
+                <p>Berisikan data yang telah disimpan di database.</p>
+            </blockquote>
+            <figcaption class="blockquote-footer">
+                CRUD <cite title="Source Title">Create Read Update Delete</cite>
+            </figcaption>
+        </figure>
+        <a href="kelola.php" type="button" class="btn btn-primary mb-4">
+            <i class="fa fa-plus"></i>
+            Tambah Data
+        </a>
+        <div class="table-responsive">
+            <table class="table align-middle table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th><center>No.</center></th>
+                        <th>NIM</th>
+                        <th>Nama Mahasiswa</th>
+                        <th>Kode Barang</th>
+                        <th>Nama Barang</th>
+                        <th>Status Barang</th>
+                        <th>Foto Barang</th>
+                        <th>Harga Barang</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                    while($result = mysqli_fetch_assoc($sql)){
+                ?>
+                    <tr>
+                        <td><center>
+                          <?php echo ++$no; ?>.
+                        </center></td>
+                        <td>
+                        <?php echo $result['nim_mahasiswa']; ?>
+                        </td>
+                        <td>
+                        <?php echo $result['nama_mahasiswa']; ?>
+                        </td>
+                        <td>
+                        <?php echo $result['kode_barang']; ?>
+                        </td>
+                        <td>
+                        <?php echo $result['nama_barang']; ?>
+                        </td>
+                        <td>
+                        <?php echo $result['status_barang']; ?>
+                        </td>
+                        <td>
+                            <img src="img/<?php echo $result['foto_barang']; ?>" style="width: 100px;">
+                        </td>
+                        <td>
+                        <?php echo $result['harga_barang']; ?>
+                        </td>
+                        <td>
+                            <a href="kelola.php?ubah=<?php echo $result['id_barang']; ?>" type="button" class="btn btn-success btn-sm">
+                                <i class="fa fa-pencil"></i>
+                                Ubah
+                            </a>
+                            <a href="proses.php?hapus=<?php echo $result['id_barang']; ?>" type="button" class="btn btn-danger btn-sm" onClick="return confirm('Apakah anda yakin ingin menghapus data tersebut?')">
+                                <i class="fa fa-trash"></i>
+                                Hapus
+                            </a>
+                        </td>
+                    </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
