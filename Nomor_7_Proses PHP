@@ -1,0 +1,89 @@
+<?php
+	include 'koneksi.php';
+
+	if(isset($_POST['aksi'])){
+		if($_POST['aksi'] == "add"){
+
+			$nim = $_POST['nim'];
+			$nama_mahasiswa = $_POST['nama_mahasiswa'];
+			$kode_barang = $_POST['kode_barang'];
+			$nama_barang = $_POST['nama_barang'];
+			$status_barang = $_POST['status_barang'];
+			$foto = $_FILES['foto']['name'];
+			$harga_barang = $_POST['harga_barang'];
+
+			$dir = "img/";
+			$tmpFile = $_FILES['foto']['tmp_name'];
+
+			move_uploaded_file($tmpFile, $dir.$foto);
+
+			//die();
+
+			$query = "INSERT INTO tabel_mahasiswa VALUES(null, '$nim', '$nama_mahasiswa', '$kode_barang', '$nama_barang', '$status_barang', '$foto', '$harga_barang')";
+			$sql = mysqli_query($conn, $query);
+
+			if($sql){
+				header("location: index.php");
+				//echo "Data Berhasil Ditambahkan <a href='index.php'>[Home]</a>";
+			} else {
+				echo $query;
+			}
+
+				//echo $nim." | ".$nama_mahasiswa." | ".$kode_barang." | ".$nama_barang." | ".$status_barang." | ".$foto." | ".$harga_barang;
+			
+				//echo "<br>Tambahkan Data <a href='index.php'>[Home]</a>";
+			} else if($_POST['aksi'] == "edit"){
+				//echo "Edit Data <a href='index.php'>[Home]</a>";
+				//var_dump($_POST);
+
+				$id_barang = $_POST['id_barang'];
+				$nim = $_POST['nim'];
+				$nama_mahasiswa = $_POST['nama_mahasiswa'];
+				$kode_barang = $_POST['kode_barang'];
+				$nama_barang = $_POST['nama_barang'];
+				$status_barang = $_POST['status_barang'];
+				$harga_barang = $_POST['harga_barang'];
+
+				$queryShow = "SELECT * FROM tabel_barang WHERE id_barang = '$id_barang';";
+				$sqlShow = mysqli_query($conn, $queryShow);
+				$result = mysqli_fetch_assoc($sqlShow);
+
+				if($_FILES['foto']['name'] == ""){
+					$foto = $result['foto_barang'];
+				} else {
+					$foto = $_FILES['foto']['name'];
+					unlink("img/".$result['foto_barang']);
+					move_uploaded_file($_FILES['foto']['tmp_name'], 'img/'.$_FILES['foto']['name']);
+				}
+
+				$query = "UPDATE tabel_barang SET nim='$nim', nama_mahasiswa='$nama_mahasiswa', kode_barang='$kode_barang', nama_barang='$nama_barang' WHERE id_barang='id_barang', status_barang='$status_barang', harga_barang='$harga_barang', foto_barang='$foto'";
+				$sql = mysqli_query($conn, $query);
+				header("location: index.php");
+			}
+
+		}
+
+		if(isset($_GET['hapus'])){
+			$id_mahasiswa = $_GET['hapus'];
+
+			$queryShow = "SELECT * FROM tabel_barang WHERE id_barang = '$id_barang';";
+			$sqlShow = mysqli_query($conn, $queryShow);
+			$result = mysqli_fetch_assoc($sqlShow);
+
+		//var_dump($result);
+
+		unlink("img/".$result['foto_barang']);
+
+		$query = "DELETE FROM tabel_barang WHERE id_barang = '$id_barang';";
+		$sql = mysqli_query($conn, $query);
+
+		if($sql){
+			header("location: index.php");
+			//echo "Data Berhasil Ditambahkan <a href='index.php'>[Home]</a>";
+		} else {
+			echo $query;
+		}
+			//echo "Hapus Data <a href='index.php'>[Home]</a>";
+
+	}
+?>
