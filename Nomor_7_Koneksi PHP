@@ -1,0 +1,14 @@
+<?php
+    $host = 'localhost';
+    $user = 'root';
+    $pass = '';
+    $kebutuhan_mahasiswa = 'kebutuhan_mahasiswa';
+
+    $conn = mysqli_connect($host, $user, $pass, $kebutuhan_mahasiswa);
+    if($conn){
+        //echo "Koneksi Berhasil";
+    }
+
+    mysqli_select_db($conn, $kebutuhan_mahasiswa);
+
+?>
